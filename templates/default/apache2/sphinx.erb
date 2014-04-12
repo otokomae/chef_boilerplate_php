@@ -1,0 +1,12 @@
+<VirtualHost *:80>
+  ServerName <%= node[:boilerplate_php][:sphinx][:host] %>
+  ServerAdmin webmaster@localhost
+
+  DocumentRoot <%= node[:boilerplate][:docs_root] %><%= node[:boilerplate_php][:sphinx][:path] %>
+  <Directory />
+    AllowOverride None
+  </Directory>
+
+  ErrorLog ${APACHE_LOG_DIR}/error.log
+  CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
