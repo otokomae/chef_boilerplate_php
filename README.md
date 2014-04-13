@@ -7,13 +7,13 @@ Containing following
 | Category | Application |
 | ------- | ---------- |
 | Documentation Generator | sphinx |
-| Class document Generator | phpdoc |
+| Class Document Generator | phpdoc |
 | Package Manager | composer (not yet) |
 | QA Tools | phpcs, phpunit, phpmd, phpdepend, phpcpd, phploc, phpcb |
 
 Requirements
 ============
-* Chef: 11.x
+* Chef: 11.x+
 
 Attributes
 ==========
