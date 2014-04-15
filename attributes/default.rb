@@ -2,12 +2,12 @@ default[:boilerplate_php][:cakephp] = {
   :version => '2.x'
 }
 default[:boilerplate_php][:sphinx] = {
-  :host => 'localhost',
+  :host => 'sphinx.local',
   :port => '80',
-  :path => '/sphinx'
+  :path => '/'
 }
 default[:boilerplate_php][:phpdoc] = {
-  :host => 'localhost',
+  :host => 'phpdoc.local',
   :port => '80',
-  :path => '/phpdoc'
+  :path => '/'
 }
