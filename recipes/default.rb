@@ -109,10 +109,10 @@ end
   python_pip p
 end
 
-# # Install or update composer
-# composer "#{node[:boilerplate][:project_root]}" do
-#   action [:install, :update]
-# end
+# Install or update composer
+composer "#{node[:boilerplate][:project_root]}" do
+  action [:install, :update]
+end
 
 # Update composer packages
 execute 'update composer packages' do
@@ -165,7 +165,9 @@ if node.normal.boilerplate.key?(:jenkins) && node.normal.boilerplate[:jenkins]
     not_if { ::File.exist?("/var/lib/jenkins/jobs/#{template}") }
   end
 
-  %w( analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit ).each do |p|
+  %w(
+    analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit
+  ).each do |p|
     jenkins_plugin p
   end
 end
