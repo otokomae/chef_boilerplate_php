@@ -2,7 +2,7 @@
   ServerName <%= node[:boilerplate_php][:sphinx][:host] %>
   ServerAdmin webmaster@localhost
 
-  DocumentRoot <%= node[:boilerplate][:docs_root] %><%= node[:boilerplate_php][:sphinx][:path] %>
+  DocumentRoot <%= node[:boilerplate][:docs_root] %>/sphinx/build/html
   <Directory />
     AllowOverride None
   </Directory>

@@ -2,7 +2,7 @@
   ServerName <%= node[:boilerplate_php][:phpdoc][:host] %>
   ServerAdmin webmaster@localhost
 
-  DocumentRoot <%= node[:boilerplate][:docs_root] %><%= node[:boilerplate_php][:phpdoc][:path] %>
+  DocumentRoot <%= node[:boilerplate][:docs_root] %>/phpdoc
   <Directory />
     AllowOverride None
   </Directory>
