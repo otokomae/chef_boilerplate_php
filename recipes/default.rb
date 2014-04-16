@@ -21,7 +21,7 @@ include_recipe 'boilerplate'
 
 # apt_repository "hhvm-#{node[:lsb][:codename]}" do
 #   uri 'http://dl.hhvm.com/ubuntu'
-#   distribution node.normal['lsb']['codename']
+#   distribution node[:lsb][:codename]
 #   components ['main']
 #   key 'http://dl.hhvm.com/conf/hhvm.gpg.key'
 #   not_if { ::File.exist?("/etc/apt/sources.list.d/hhvm-#{node[:lsb][:codename]}.list") }
@@ -41,8 +41,8 @@ end
 
 # Install gem packages
 execute 'install php related gem packages' do
-  command "cd #{node[:boilerplate][:project_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
-  only_if { ::File.exist?("#{node[:boilerplate][:project_root]}/Gemfile") }
+  command "cd #{node[:boilerplate][:app_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
 end
 
 # Install pear packages
@@ -51,7 +51,7 @@ end
     action :discover
   end
 end
-if node.normal.boilerplate_php.key?(:cakephp)
+if node[:boilerplate_php].key?(:cakephp)
   # cakephp 2.x is not compatible with phpunit 4.x
   execute 'install phpunit' do
     command 'pear config-set auto_discover 1; pear install --alldeps phpunit/PHPUnit-3.7.32'
@@ -110,14 +110,14 @@ end
 end
 
 # Install or update composer
-composer "#{node[:boilerplate][:project_root]}" do
+composer "#{node[:boilerplate][:app_root]}" do
   action [:install, :update]
 end
 
 # Update composer packages
 execute 'update composer packages' do
-  command "cd #{node.normal.boilerplate.project_root}; `which composer` update"
-  only_if { ::File.exist?("#{node.normal.boilerplate.project_root}/composer.json") }
+  command "cd #{node[:boilerplate][:app_root]}; `which composer` update"
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/composer.json") }
 end
 
 # Deploy configuration files
@@ -143,17 +143,17 @@ include_recipe 'apache2'
 end
 
 # Setup pre-commit hook
-template "#{node[:boilerplate][:project_root]}/.git/hooks/pre-commit" do
+template "#{node[:boilerplate][:app_root]}/.git/hooks/pre-commit" do
   source 'git/pre-commit'
   mode 0755
-  only_if { ::File.exist?("#{node[:boilerplate][:project_root]}/.git/hooks") }
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/.git/hooks") }
 end
 
 ## Setup jenkins
-if node.normal.boilerplate.key?(:jenkins) && node.normal.boilerplate[:jenkins]
+if node[:boilerplate].key?(:jenkins) && node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
 
-  if node.normal.boilerplate_php.key?(:cakephp)
+  if node[:boilerplate_php].key?(:cakephp)
     cmd = 'cd /var/lib/jenkins/jobs/ && git clone https://github.com/vitorpc/cakephp-jenkins-template.git cakephp-template && chown -R jenkins:nogroup cakephp-template'
     template = 'cakephp-template'
   else
