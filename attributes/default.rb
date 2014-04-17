@@ -1,6 +1,7 @@
-default[:boilerplate_php][:cakephp] = {
+default[:boilerplate_php][:symfony] = {
   :version => '2.x'
 }
+default[:boilerplate_php][:cakephp] = false
 default[:boilerplate_php][:sphinx] = {
   :host => 'sphinx.local',
   :port => '80',

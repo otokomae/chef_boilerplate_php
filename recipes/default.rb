@@ -51,7 +51,7 @@ end
     action :discover
   end
 end
-if node[:boilerplate_php].key?(:cakephp)
+if node[:boilerplate_php].key?(:cakephp) && node[:boilerplate_php][:cakephp]
   # cakephp 2.x is not compatible with phpunit 4.x
   execute 'install phpunit' do
     command 'pear config-set auto_discover 1; pear install --alldeps phpunit/PHPUnit-3.7.32'
