@@ -8,12 +8,21 @@ Containing following
 | ------- | ---------- |
 | Documentation Generator | sphinx |
 | Class Document Generator | phpdoc |
-| Package Manager | composer (not yet) |
+| Package Manager | composer |
 | QA Tools | phpcs, phpunit, phpmd, phpdepend, phpcpd, phploc, phpcb |
 
 Requirements
 ============
 * Chef: 11.x+
+* Ruby: 1.9+
+
+Default URL
+============
+
+| Application | URL |
+| ----------- | ----------- |
+| sphinx | http://sphinx.local/ |
+| phpdoc | http://phpdoc.local/ |
 
 Attributes
 ==========
@@ -33,11 +42,9 @@ $ cat nodes/example.json
     "boilerplate_php": {
         "sphinx": {
             "host": "example.com",
-            "path": "/sphinx"
         },
         "phpdoc": {
             "host": "example.com",
-            "path": "/phpdoc"
         }
     }
 }
