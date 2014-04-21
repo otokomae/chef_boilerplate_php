@@ -122,6 +122,14 @@ execute 'update composer packages' do
   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/composer.json") }
 end
 
+# Setup framework specific permissions
+if node[:boilerplate_php].key?(:cakephp)
+  directory "#{node[:boilerplate][:app_root]}/app/tmp" do
+    mode '0777'
+    recursive true
+  end
+end
+
 # Deploy configuration files
 ## Setup php
 template '/etc/php5/cli/php.ini' do
