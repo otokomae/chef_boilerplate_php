@@ -3,7 +3,6 @@ maintainer 'topaz2'
 maintainer_email 'topaz2@m0n0m0n0.com'
 license 'GPL v3'
 description 'Installs/Configures boilerplate_php'
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.2.2'
 
 depends 'apache2'
