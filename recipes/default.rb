@@ -175,9 +175,26 @@ if node[:boilerplate].key?(:jenkins) && node[:boilerplate][:jenkins]
     not_if { ::File.exist?("/var/lib/jenkins/jobs/#{template}") }
   end
 
+  # execute 'install phpenv' do
+  #   command 'git clone git://github.com/phpenv/phpenv.git .phpenv'
+  # end
+
+  # execute 'export phpenv' do
+  #   command 'echo \'export PATH="$HOME/.phpenv/bin:$PATH"\' >> ~/.bash_profile'
+  # end
+
+  # execute 'phpenv rehash' do
+  #   command 'echo \'eval "$(phpenv init -)"\' >> ~/.bash_profile && exec $SHELL && phpenv rehash'
+  # end
+
   %w(
     analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit
   ).each do |p|
     jenkins_plugin p
   end
+end
+
+# Add build tools
+remote_directory "#{node[:boilerplate][:app_root]}/tools/build" do
+  source 'tools/build'
 end
