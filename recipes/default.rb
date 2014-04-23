@@ -163,18 +163,6 @@ end
 if node[:boilerplate].key?(:jenkins) && node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
 
-  if node[:boilerplate_php].key?(:cakephp)
-    cmd = 'cd /var/lib/jenkins/jobs/ && git clone https://github.com/vitorpc/cakephp-jenkins-template.git cakephp-template && chown -R jenkins:nogroup cakephp-template'
-    template = 'cakephp-template'
-  else
-    cmd = 'cd /var/lib/jenkins/jobs/ && mkdir php-template && cd php-template && wget https://raw.github.com/sebastianbergmann/php-jenkins-template/master/config.xml && cd .. && chown -R jenkins:nogroup php-template'
-    template = 'php-template'
-  end
-  execute 'install jenkins template for php project' do
-    command cmd
-    not_if { ::File.exist?("/var/lib/jenkins/jobs/#{template}") }
-  end
-
   # execute 'install phpenv' do
   #   command 'git clone git://github.com/phpenv/phpenv.git .phpenv'
   # end
@@ -192,9 +180,4 @@ if node[:boilerplate].key?(:jenkins) && node[:boilerplate][:jenkins]
   ).each do |p|
     jenkins_plugin p
   end
-end
-
-# Add build tools
-remote_directory "#{node[:boilerplate][:app_root]}/tools/build" do
-  source 'tools/build'
 end
