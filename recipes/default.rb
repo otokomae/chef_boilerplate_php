@@ -51,7 +51,7 @@ end
     action :discover
   end
 end
-if node[:boilerplate_php].key?(:cakephp) && node[:boilerplate_php][:cakephp]
+if node[:boilerplate_php][:cakephp]
   # cakephp 2.x is not compatible with phpunit 4.x
   execute 'install phpunit' do
     command 'pear config-set auto_discover 1; pear install --alldeps phpunit/PHPUnit-3.7.32'
@@ -110,7 +110,7 @@ end
 end
 
 # Install or update composer
-composer "#{node[:boilerplate][:app_root]}" do
+composer node[:boilerplate][:app_root] do
   owner 'www-data'
   group 'www-data'
   action [:install, :update]
@@ -123,7 +123,7 @@ execute 'update composer packages' do
 end
 
 # Setup framework specific permissions
-if node[:boilerplate_php].key?(:cakephp)
+if node[:boilerplate_php][:cakephp]
   directory "#{node[:boilerplate][:app_root]}/app/tmp" do
     mode '0777'
     recursive true
@@ -160,7 +160,7 @@ template "#{node[:boilerplate][:app_root]}/.git/hooks/pre-commit" do
 end
 
 ## Setup jenkins
-if node[:boilerplate].key?(:jenkins) && node[:boilerplate][:jenkins]
+if node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
 
   # execute 'install phpenv' do
