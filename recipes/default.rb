@@ -123,11 +123,10 @@ execute 'update composer packages' do
 end
 
 # Setup framework specific permissions
-if node[:boilerplate_php][:cakephp]
-  directory "#{node[:boilerplate][:app_root]}/app/tmp" do
-    mode '0777'
-    recursive true
-  end
+directory "#{node[:boilerplate][:app_root]}/app/tmp" do
+  mode '0777'
+  recursive true
+  only_if { node[:boilerplate_php][:cakephp] }
 end
 
 # Deploy configuration files
