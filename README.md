@@ -2,6 +2,11 @@ Description
 ===========
 This cookbook's goal is to provide the best and dead simple way to start new web application project based on php.
 
+[![Build Status](https://travis-ci.org/topaz2/chef_boilerplate_php.png?branch=master)](https://travis-ci.org/topaz2/chef_boilerplate_php)
+[![Dependency Status](https://gemnasium.com/topaz2/chef_boilerplate_php.png)](https://gemnasium.com/topaz2/chef_boilerplate_php)
+[![Code Climate](https://codeclimate.com/github/topaz2/chef_boilerplate_php.png)](https://codeclimate.com/github/topaz2/chef_boilerplate_php)
+[![Coverage Status](https://coveralls.io/repos/topaz2/chef_boilerplate_php/badge.png?branch=master)](https://coveralls.io/r/topaz2/chef_boilerplate_php)
+
 Containing following
 
 | Category | Application |
