@@ -3,7 +3,7 @@ maintainer 'topaz2'
 maintainer_email 'topaz2@m0n0m0n0.com'
 license 'GPL v3'
 description 'Installs/Configures boilerplate_php'
-version '0.2.3'
+version '0.3.0'
 
 depends 'apache2'
 depends 'jenkins'
