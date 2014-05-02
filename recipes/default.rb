@@ -110,6 +110,7 @@ end
 end
 
 # Install or update composer
+include_recipe 'composer'
 composer node[:boilerplate][:app_root] do
   owner 'www-data'
   group 'www-data'
