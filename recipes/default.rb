@@ -152,6 +152,12 @@ include_recipe 'apache2'
   end
 end
 
+# Daemonize jasmine server
+execute 'start jasmine server' do
+  command "start-stop-daemon -S --pidfile /var/run/jasmine.pid -d #{node[:boilerplate][:app_root]} -x `which rake` -- jasmine -q -s"
+  only_if { ::File.exist?(node[:boilerplate][:app_root]) }
+end
+
 # Setup pre-commit hook
 template "#{node[:boilerplate][:app_root]}/.git/hooks/pre-commit" do
   source 'git/pre-commit'
