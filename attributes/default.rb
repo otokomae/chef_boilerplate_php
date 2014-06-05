@@ -1,3 +1,6 @@
+default[:boilerplate_php][:framework] = {
+  :type => :symfony
+}
 default[:boilerplate_php][:symfony] = {
   :version => '2.x'
 }

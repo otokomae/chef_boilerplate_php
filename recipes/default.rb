@@ -153,7 +153,12 @@ include_recipe 'apache2'
 end
 
 # Setup pre-commit hook
-template "#{node[:boilerplate][:app_root]}/.git/hooks/pre-commit" do
+# execute 'Add templatedir' do
+#   command 'git config --global init.templatedir \'~/.git-templates\''
+# end
+
+#template "~/.git_template/hooks/pre-commit" do
+template "/usr/share/git-core/templates/hooks/pre-commit" do
   source 'git/pre-commit'
   mode 0755
   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/.git/hooks") }
