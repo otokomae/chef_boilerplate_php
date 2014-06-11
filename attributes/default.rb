@@ -15,3 +15,6 @@ default[:boilerplate_php][:phpdoc] = {
   :port => '80',
   :path => '/'
 }
+default[:boilerplate_php][:git] = {
+  :hooks => 'lint phpcs phpmd phpunit'
+}

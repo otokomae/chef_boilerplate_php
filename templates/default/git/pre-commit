@@ -53,6 +53,7 @@ then
 fi
 
 exit $?
+
 # DIRNAME="$(dirname -- "$0")"
 # HOOKS="<%= node[:boilerplate_php][:git][:hooks] %>"
 
