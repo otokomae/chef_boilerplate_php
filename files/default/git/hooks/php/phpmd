@@ -1,6 +1,7 @@
 #!/bin/sh
 
-PROJECT=`php -r "echo dirname(dirname(dirname(realpath('$0'))));"`
+PROJECT=`php -r "echo dirname(dirname(dirname(dirname(realpath('$0')))));"`
+RULESET="/etc/phpmd.xml"
 
 FILES=""
 for FILE in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\\\.\(php\|ctp\)\$`
@@ -12,7 +13,7 @@ FILES_CSV=`echo $FILES | sed 's/\s/,/g'`
 if [ "$FILES_CSV" != "" ]
 then
   echo "Running phpmd..."
-  phpmd $FILES_CSV text ruleset/phpmd.xml || exit $?
+  phpmd $FILES_CSV text $RULESET || exit $?
 fi
 
 exit 0

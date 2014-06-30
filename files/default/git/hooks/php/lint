@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PROJECT=`php -r "echo dirname(dirname(dirname(realpath('$0'))));"`
+PROJECT=`php -r "echo dirname(dirname(dirname(dirname(realpath('$0')))));"`
 
 echo "Checking PHP Lint..."
 for FILE in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\\\.\(php\|ctp\)\$`

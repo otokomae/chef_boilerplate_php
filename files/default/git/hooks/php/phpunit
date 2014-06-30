@@ -1,0 +1,20 @@
+#!/bin/bash -e
+
+PROJECT=`php -r "echo dirname(dirname(dirname(dirname(realpath('$0')))));"`
+
+FILES=""
+for FILE in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\\\.\(php\)\$`
+do
+  FILES="$FILES $PROJECT/$FILE"
+done
+
+if [ "$FILES" != "" ]
+then
+  echo "Running phpunit..."
+  for TEST in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\Test\\.\(php\)\$`
+  do
+    phpunit app $TEST --stderr --configuration phpunit.xml.dist || exit $?
+  done
+fi
+
+exit 0

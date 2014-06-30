@@ -18,14 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include_recipe 'boilerplate'
-
-# apt_repository "hhvm-#{node[:lsb][:codename]}" do
-#   uri 'http://dl.hhvm.com/ubuntu'
-#   distribution node[:lsb][:codename]
-#   components ['main']
-#   key 'http://dl.hhvm.com/conf/hhvm.gpg.key'
-#   not_if { ::File.exist?("/etc/apt/sources.list.d/hhvm-#{node[:lsb][:codename]}.list") }
-# end
+include_recipe 'hhvm'
+service 'hhvm' do
+  action [:enable, :start]
+end
 
 # Install packages necessary for this project
 %w(
@@ -37,6 +33,26 @@ include_recipe 'boilerplate'
     action [:install, :upgrade]
     version node.default[:versions][pkg] if node.default[:versions][pkg].kind_of? String
   end
+end
+
+# Install pre-commit hooks
+%w( php cakephp ).each do |hooks|
+  remote_directory "/usr/share/git-core/templates/hooks/#{hooks}" do
+    files_mode 0755
+    source "git/hooks/#{hooks}"
+  end
+end
+
+template '/usr/share/git-core/templates/hooks/pre-commit' do
+  source 'git/pre-commit'
+  mode 0755
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/.git/hooks") }
+end
+
+execute 'initialize git hooks' do
+  command 'git init'
+  cwd node[:boilerplate][:app_root]
+  only_if { ::File.exist?(node[:boilerplate][:app_root]) }
 end
 
 # Install gem packages
@@ -79,6 +95,19 @@ execute 'install phpmd' do
   not_if { ::File.exist?('/usr/bin/phpmd') }
 end
 
+ruleset = if File.exists?(
+    run_context.cookbook_collection[:boilerplate_php].
+    preferred_filename_on_disk_location(run_context.node,
+      :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml")
+    )
+            "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml"
+          else
+            'build/default/phpmd.xml'
+          end
+cookbook_file '/etc/phpmd.xml' do
+  source ruleset
+end
+
 execute 'install pdepend' do
   command 'pear install --alldeps pdepend/PHP_Depend'
   not_if { ::File.exist?('/usr/bin/pdepend') }
@@ -119,7 +148,7 @@ end
 
 # Update composer packages
 execute 'update composer packages' do
-  command "cd #{node[:boilerplate][:app_root]}; `which composer` update"
+  command "cd #{node[:boilerplate][:app_root]}; hhvm `which composer` update"
   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/composer.json") }
 end
 
@@ -150,18 +179,6 @@ include_recipe 'apache2'
   apache_site site do
     enable true
   end
-end
-
-# Setup pre-commit hook
-# execute 'Add templatedir' do
-#   command 'git config --global init.templatedir \'~/.git-templates\''
-# end
-
-#template "~/.git_template/hooks/pre-commit" do
-template "/usr/share/git-core/templates/hooks/pre-commit" do
-  source 'git/pre-commit'
-  mode 0755
-  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/.git/hooks") }
 end
 
 ## Setup jenkins

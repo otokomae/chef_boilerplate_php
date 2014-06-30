@@ -1,10 +1,31 @@
+default[:boilerplate_php][:git] = {
+  :hooks => {
+    :lint => 'php/lint',
+    :phpcs => 'php/phpcs',
+    :phpmd => 'php/phpmd',
+    :phpunit => 'php/phpunit',
+  }
+}
+
 default[:boilerplate_php][:framework] = {
   :type => :symfony
 }
 default[:boilerplate_php][:symfony] = {
-  :version => '2.x'
+  :version => '2.x',
+  :git => {
+    :hooks => {
+    }
+  }
 }
-default[:boilerplate_php][:cakephp] = false
+default[:boilerplate_php][:cakephp] = {
+  :version => '2.x',
+  :git => {
+    :hooks => {
+      :phpcs => 'cakephp/phpcs',
+      :phpunit => 'cakephp/phpunit',
+    }
+  }
+}
 default[:boilerplate_php][:sphinx] = {
   :host => 'sphinx.local',
   :port => '80',
@@ -15,6 +36,6 @@ default[:boilerplate_php][:phpdoc] = {
   :port => '80',
   :path => '/'
 }
-default[:boilerplate_php][:git] = {
-  :hooks => 'lint phpcs phpmd phpunit'
-}
+
+# Merge framework specific hooks
+default[:boilerplate_php][:git][:hooks].update(default[:boilerplate_php][node[:boilerplate_php][:framework][:type]][:git][:hooks])
