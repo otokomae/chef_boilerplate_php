@@ -3,7 +3,7 @@ default[:boilerplate_php][:git] = {
     :lint => 'php/lint',
     :phpcs => 'php/phpcs',
     :phpmd => 'php/phpmd',
-    :phpunit => 'php/phpunit',
+    :phpunit => 'php/phpunit'
   }
 }
 
@@ -22,7 +22,7 @@ default[:boilerplate_php][:cakephp] = {
   :git => {
     :hooks => {
       :phpcs => 'cakephp/phpcs',
-      :phpunit => 'cakephp/phpunit',
+      :phpunit => 'cakephp/phpunit'
     }
   }
 }

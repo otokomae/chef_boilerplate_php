@@ -95,9 +95,9 @@ execute 'install phpmd' do
   not_if { ::File.exist?('/usr/bin/phpmd') }
 end
 
-ruleset = if File.exists?(
-    run_context.cookbook_collection[:boilerplate_php].
-    preferred_filename_on_disk_location(run_context.node,
+ruleset = if File.exist?(
+    run_context.cookbook_collection[:boilerplate_php]
+      .preferred_filename_on_disk_location(run_context.node,
       :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml")
     )
             "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml"
