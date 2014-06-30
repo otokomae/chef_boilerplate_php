@@ -31,7 +31,7 @@ end
 ).each do |pkg|
   package pkg do
     action [:install, :upgrade]
-    version node.default[:versions][pkg] if node.default[:versions][pkg].kind_of? String
+    version node.default[:versions][pkg] if node.default[:versions][pkg].is_a? String
   end
 end
 
