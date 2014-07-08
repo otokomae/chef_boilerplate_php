@@ -18,9 +18,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include_recipe 'boilerplate'
-include_recipe 'hhvm'
-service 'hhvm' do
-  action [:enable, :start]
+begin
+  hhvm = 'hhvm'
+  include_recipe 'hhvm'
+  service 'hhvm' do
+    action [:enable, :start]
+  end
+rescue Exception => e
+  log e.message
+  hhvm = ''
 end
 
 # Install packages necessary for this project
@@ -148,7 +154,7 @@ end
 
 # Update composer packages
 execute 'update composer packages' do
-  command "cd #{node[:boilerplate][:app_root]}; hhvm `which composer` update"
+  command "cd #{node[:boilerplate][:app_root]}; #{hhvm} `which composer` update"
   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/composer.json") }
 end
 
