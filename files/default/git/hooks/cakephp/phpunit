@@ -2,9 +2,11 @@
 
 PROJECT=`pwd`
 APP=""
+PLUGIN=""
 if [ ! -z `echo $PROJECT | egrep 'app/Plugin'` ]
 then
-  APP=`echo $PROJECT | sed 's/\w\+\/\w\+\/\w\+$//'`
+  APP=`echo $PROJECT | sed 's/\/\w\+\/\w\+\/\w\+$//'`
+  PLUGIN=`echo $PROJECT | sed 's/.*\/\(\w\+\)$/\1/'`
 fi
 
 FILES=""
@@ -16,9 +18,18 @@ done
 if [ "$FILES" != "" ]
 then
   echo "Running phpunit..."
+  if [ $PLUGIN != "" ]
+  then
+    cd $APP
+  fi
   for TEST in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\Test\\.\(php\)\$ | sed 's/app\/Test\/Case\/\([a-zA-Z0-9\/]\+\)Test\.php/\1/g'`
   do
-    $APP/lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
+    if [ $PLUGIN != "" ]
+    then
+      ./lib/Cake/Console/cake test $PLUGIN All$PLUGIN --stderr --configuration phpunit.xml.dist || exit $?
+    else
+      ./lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
+    fi
   done
 fi
 
