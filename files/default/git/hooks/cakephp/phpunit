@@ -1,6 +1,11 @@
 #!/bin/bash -e
 
-PROJECT=`php -r "echo dirname(dirname(dirname(dirname(realpath('$0')))));"`
+PROJECT=`pwd`
+APP=""
+if [ ! -z `echo $PROJECT | egrep 'app/Plugin'` ]
+then
+  APP=`echo $PROJECT | sed 's/\w\+\/\w\+\/\w\+$//'`
+fi
 
 FILES=""
 for FILE in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\\\.\(php\|ctp\)\$`
@@ -13,7 +18,7 @@ then
   echo "Running phpunit..."
   for TEST in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\Test\\.\(php\)\$ | sed 's/app\/Test\/Case\/\([a-zA-Z0-9\/]\+\)Test\.php/\1/g'`
   do
-    ./lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
+    $APP/lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
   done
 fi
 
