@@ -24,8 +24,7 @@ begin
   service 'hhvm' do
     action [:enable, :start]
   end
-rescue Exception => e
-  log e.message
+rescue
   hhvm = ''
 end
 
