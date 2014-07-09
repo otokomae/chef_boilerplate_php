@@ -18,15 +18,20 @@ done
 if [ "$FILES" != "" ]
 then
   echo "Running phpunit..."
-  if [ $PLUGIN != "" ]
-  then
-    cd $APP
-  fi
-  for TEST in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\Test\\.\(php\)\$ | sed 's/app\/Test\/Case\/\([a-zA-Z0-9\/]\+\)Test\.php/\1/g'`
+  for TEST in `git diff --cached --name-only --diff-filter=ACMR HEAD`
   do
+    echo $TEST
+    if [ -z `echo $TEST | egrep \\Test\\.\(php\)\$` ]
+    then
+      TEST=`echo $TEST | sed 's/\([a-zA-Z0-9\/]\+\)\.php/\1/g'`
+    else
+      TEST=`echo $TEST | sed 's/app\/Test\/Case\/\([a-zA-Z0-9\/]\+\)Test\.php/\1/g'`
+    fi
+    echo $TEST
     if [ $PLUGIN != "" ]
     then
-      ./lib/Cake/Console/cake test $PLUGIN All$PLUGIN --stderr --configuration phpunit.xml.dist || exit $?
+      cd $APP
+      ./lib/Cake/Console/cake test $PLUGIN $TEST --stderr --configuration phpunit.xml.dist || exit $?
     else
       ./lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
     fi
