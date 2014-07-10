@@ -14,7 +14,7 @@
 
     <!-- Import rule set -->
     <rule ref="rulesets/cleancode.xml">
-        <!-- Exclude the rule for static access like lassRegistry::init('Foo');. -->
+        <!-- Exclude the rule for static access like ClassRegistry::init('Foo');. -->
         <exclude name="StaticAccess" />
         <exclude name="ElseExpression" />
     </rule>
