@@ -15,3 +15,6 @@ depends 'jenkins'
 depends 'php'
 depends 'python'
 # depends 'application_php'
+
+supports 'debian'
+supports 'ubuntu'
