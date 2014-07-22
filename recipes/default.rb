@@ -149,6 +149,7 @@ composer node[:boilerplate][:app_root] do
   owner 'www-data'
   group 'www-data'
   action [:install, :update]
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/composer.json") }
 end
 
 # Update composer packages
