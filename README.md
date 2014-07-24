@@ -56,7 +56,7 @@ $ cat nodes/example.json
 ```
 
 ### Stop installing specific applicaiton
-e.g.) Stop installing sphinx
+#### Stop installing sphinx
 ```
 $ cat nodes/example.json
 {
