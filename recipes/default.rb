@@ -174,10 +174,10 @@ end
 
 # Deploy configuration files
 ## Setup php
-template '/etc/php5/cli/php.ini' do
-  source 'php/php.ini.erb'
-  mode 0644
-  variables(:directives => node[:php][:directives])
+%w( cli apache2 ).each do |type|
+  template "/etc/php5/#{type}/php.ini" do
+    source 'php/php.ini.erb'
+  end
 end
 
 ## Setup apache
@@ -185,8 +185,8 @@ include_recipe 'apache2'
 
 %w( sphinx phpdoc ).each do |site|
   next unless node[:boilerplate_php][site]
-  template "#{node[:apache][:dir]}/sites-available/#{site}" do
-    source "apache2/#{site}.erb"
+  template "#{node[:apache][:dir]}/sites-available/#{site}.conf" do
+    source "apache2/#{site}.conf.erb"
     notifies :restart, 'service[apache2]'
   end
   apache_site site do
