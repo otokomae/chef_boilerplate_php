@@ -13,6 +13,7 @@ depends 'composer'
 depends 'hhvm'
 depends 'jenkins'
 depends 'php'
+depends 'dotdeb_repo'
 depends 'python'
 
 supports 'debian'

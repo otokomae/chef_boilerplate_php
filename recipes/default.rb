@@ -18,6 +18,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 include_recipe 'boilerplate'
+
+case node[:platform]
+when 'debian'
+  include_recipe 'dotdeb_repo::php_newest'
+when 'ubuntu'
+  include_recipe 'php::apt_ondrej_ppa'
+end
+
 begin
   hhvm = 'hhvm'
   include_recipe 'hhvm'
@@ -36,7 +44,6 @@ end
 ).each do |pkg|
   package pkg do
     action [:install, :upgrade]
-    version node.default[:versions][pkg] if node.default[:versions][pkg].is_a? String
   end
 end
 
@@ -191,21 +198,22 @@ end
 if node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
 
-  # execute 'install phpenv' do
-  #   command 'git clone git://github.com/phpenv/phpenv.git .phpenv'
-  # end
-
-  # execute 'export phpenv' do
-  #   command 'echo \'export PATH="$HOME/.phpenv/bin:$PATH"\' >> ~/.bash_profile'
-  # end
-
-  # execute 'phpenv rehash' do
-  #   command 'echo \'eval "$(phpenv init -)"\' >> ~/.bash_profile && exec $SHELL && phpenv rehash'
-  # end
-
   %w(
     analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit
   ).each do |p|
     jenkins_plugin p
   end
 end
+
+## Setup phpenv
+# execute 'install phpenv' do
+#   command 'git clone git://github.com/phpenv/phpenv.git .phpenv'
+# end
+
+# execute 'export phpenv' do
+#   command 'echo \'export PATH="$HOME/.phpenv/bin:$PATH"\' >> ~/.bash_profile'
+# end
+
+# execute 'phpenv rehash' do
+#   command 'echo \'eval "$(phpenv init -)"\' >> ~/.bash_profile && exec $SHELL && phpenv rehash'
+# end
