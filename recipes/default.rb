@@ -47,6 +47,9 @@ end
   end
 end
 
+# Workaround to install apache after ondrej ppa init which includes apache2.4
+include_recipe 'boilerplate::apache2' if node[:boilerplate][:apache2]
+
 # Install pre-commit hooks
 %w( php cakephp ).each do |hooks|
   remote_directory "/usr/share/git-core/templates/hooks/#{hooks}" do
