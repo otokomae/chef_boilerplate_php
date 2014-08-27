@@ -175,6 +175,11 @@ directory "#{node[:boilerplate][:app_root]}/app/tmp" do
   only_if { node[:boilerplate_php][:cakephp] }
 end
 
+# Add write permission to default session.save_path
+directory '/var/lib/php5' do
+  mode '0777'
+end
+
 # Deploy configuration files
 ## Setup php
 %w( cli apache2 ).each do |type|
