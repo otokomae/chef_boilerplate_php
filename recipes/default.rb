@@ -21,6 +21,7 @@ include_recipe 'boilerplate'
 
 case node[:platform]
 when 'debian'
+  include_recipe 'dotdeb_repo'
   include_recipe 'dotdeb_repo::php_newest'
 when 'ubuntu'
   include_recipe 'php::apt_ondrej_ppa'
