@@ -114,13 +114,14 @@ end
 ruleset = if File.exist?(
     run_context.cookbook_collection[:boilerplate_php]
       .preferred_filename_on_disk_location(run_context.node,
-      :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml")
+      :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml")
     )
-            "build/#{node[:boilerplate_php][:framework][:type]}/phpmd.xml"
+            "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml"
           else
-            'build/default/phpmd.xml'
+            'build/default/phpmd/rules.xml'
           end
-cookbook_file '/etc/phpmd.xml' do
+directory '/etc/phpmd'
+cookbook_file '/etc/phpmd/rules.xml' do
   source ruleset
 end
 
@@ -171,14 +172,16 @@ end
 
 # Setup framework specific permissions
 directory "#{node[:boilerplate][:app_root]}/app/tmp" do
-  mode '0777'
+  mode 0777
   recursive true
   only_if { node[:boilerplate_php][:cakephp] }
 end
 
 # Add write permission to default session.save_path
 directory '/var/lib/php5' do
-  mode '0777'
+  owner 'www-data'
+  group 'www-data'
+  mode 0755
 end
 
 # Deploy configuration files
@@ -211,6 +214,11 @@ if node[:boilerplate][:jenkins]
     analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit
   ).each do |p|
     jenkins_plugin p
+  end
+
+  remote_directory '/usr/local/bin/tools/build/jenkins' do
+    files_mode 0755
+    source 'tools/build/jenkins'
   end
 end
 
