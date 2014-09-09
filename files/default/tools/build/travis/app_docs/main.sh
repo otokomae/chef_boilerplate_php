@@ -7,6 +7,7 @@ LOG=/var/log/phpdoc.log
 
 # Clear previous build
 rm -rf $APP
+sudo chmod a+w $LOG
 cat /dev/null > $LOG
 
 # Generate sphinx docs
