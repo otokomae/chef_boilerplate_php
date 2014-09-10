@@ -22,7 +22,7 @@ cd -
 git clone $CLASS_DOC_SOURCE_URI
 cd $CLASS_DOC_SOURCE_ROOT
 cp tools/build/app/cakephp/composer.json .
-composer install --prefer-dist
+composer update --prefer-dist
 
 # Init phpdoc options
 for p in `cat app/Config/vendors.txt`
