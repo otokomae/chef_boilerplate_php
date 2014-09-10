@@ -5,9 +5,12 @@ CLASS_DOC_SOURCE_ROOT=$WORKSPACE/$APP
 APP_ROOT=$CLASS_DOC_SOURCE_ROOT/app
 LOG=/var/log/phpdoc.log
 
+sudo mkdir `dirname $LOG`
+sudo touch $LOG
+sudo chmod a+w $LOG
+
 # Clear previous build
 rm -rf $APP
-sudo chmod a+w $LOG
 cat /dev/null > $LOG
 
 # Generate sphinx docs
