@@ -5,7 +5,6 @@ CLASS_DOC_SOURCE_ROOT=$WORKSPACE/$APP
 APP_ROOT=$CLASS_DOC_SOURCE_ROOT/app
 LOG=/var/log/phpdoc.log
 
-sudo mkdir `dirname $LOG`
 sudo touch $LOG
 sudo chmod a+w $LOG
 
@@ -22,6 +21,8 @@ cd -
 git clone $CLASS_DOC_SOURCE_URI
 cd $CLASS_DOC_SOURCE_ROOT
 cp tools/build/app/cakephp/composer.json .
+composer install --prefer-dist
+env
 hhvm `which composer` update --prefer-dist
 
 # Init phpdoc options
