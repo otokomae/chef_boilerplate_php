@@ -15,15 +15,14 @@ cat /dev/null > $LOG
 # Generate sphinx docs
 cd $WORKSPACE/sphinx
 make html
+[ $? -ne 0 ] && exit 1
 cd -
 
 # Install all plugins
 git clone $CLASS_DOC_SOURCE_URI
 cd $CLASS_DOC_SOURCE_ROOT
 cp tools/build/app/cakephp/composer.json .
-composer install --prefer-dist
-env
-hhvm `which composer` update --prefer-dist
+hhvm `which composer` install --prefer-dist
 
 # Init phpdoc options
 for p in `cat app/Config/vendors.txt`
