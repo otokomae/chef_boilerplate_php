@@ -33,6 +33,9 @@ begin
   service 'hhvm' do
     action [:enable, :start]
   end
+  template '/etc/hhvm/server.ini' do
+    source 'hhvm/server.ini.erb'
+  end
 rescue
   hhvm = ''
 end
