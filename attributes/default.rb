@@ -1,3 +1,10 @@
+default[:boilerplate_php] = {
+  repo: {
+    type: 'git',
+    uri: 'https://github.com/topaz2/chef_boilerplate_php.git'
+  }
+}
+
 default[:boilerplate_php][:git] = {
   hooks: {
     lint: 'php/lint',
@@ -38,4 +45,6 @@ default[:boilerplate_php][:phpdoc] = {
 }
 
 # Merge framework specific hooks
-default[:boilerplate_php][:git][:hooks].update(default[:boilerplate_php][node[:boilerplate_php][:framework][:type]][:git][:hooks])
+default[:boilerplate_php][:git][:hooks].update(
+  default[:boilerplate_php][node[:boilerplate_php][:framework][:type]][:git][:hooks]
+)
