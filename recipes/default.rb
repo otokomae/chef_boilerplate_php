@@ -218,8 +218,8 @@ if node[:boilerplate][:jenkins]
     development staging production
   ).each do |environment|
     %w(
-    chef_boilerplate_php
-  ).each do |type|
+      chef_boilerplate_php
+    ).each do |type|
       jobs << [environment, type].join('_')
     end
   end
