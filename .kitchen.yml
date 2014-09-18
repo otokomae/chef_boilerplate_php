@@ -1,13 +1,20 @@
 driver:
   name: vagrant
+  customize:
+    cpus: 2
+    memory: 1024
 
 provisioner:
   name: chef_zero
 
 platforms:
-  - name: centos-5.10
+  - name: ubuntu-12.04
+  - name: debian-wheezy-7
+    driver_config:
+      box: debian-wheezy-7
+      box_url: https://googledrive.com/host/0B83ZToJ3fGtDVC1DeVVzc3lkc0U/debian-7.5.0-amd64_virtualbox.box
 
 suites:
-  - name: master
+  - name: boilerplate_php
     run_list:
-      - recipe[mysql::master]
+      - recipe[boilerplate_php]
