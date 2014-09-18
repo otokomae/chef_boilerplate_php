@@ -213,6 +213,34 @@ end
 if node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
 
+  jobs = []
+  %w(
+    development staging production
+  ).each do |environment|
+    %w(
+      chef_boilerplate_php
+    ).each do |type|
+      jobs << [environment, type].join('_')
+    end
+  end
+  jobs.each do |job|
+    next unless has_template?("jenkins/jobs/#{job}/config.xml.erb")
+
+    xml = File.join(Chef::Config[:file_cache_path], "jenkins-jobs-#{job}-config.xml")
+    template xml do
+      source "jenkins/jobs/#{job}/config.xml.erb"
+    end
+
+    jenkins_job job do
+      config xml
+      not_if { ::File.exist?("#{node[:jenkins][:master][:home]}/jobs/#{job}/config.xml") }
+    end
+
+    template "#{node[:jenkins][:master][:home]}/jobs/#{job}/config.xml" do
+      source "jenkins/jobs/#{job}/config.xml.erb"
+    end
+  end
+
   %w(
     analysis-core checkstyle cloverphp dry htmlpublisher jdepend php plot pmd violations xunit
   ).each do |p|
