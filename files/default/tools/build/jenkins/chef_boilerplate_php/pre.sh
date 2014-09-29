@@ -3,8 +3,8 @@
 if [ "$ENVIRONMENT" = "development" ]
 then
   bundle update
-  bundle ex berks update
+  berks update
 else
   bundle install --without development
-  bundle ex berks install -e development
+  berks install -e development
 fi
