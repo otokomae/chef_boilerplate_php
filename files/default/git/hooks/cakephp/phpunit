@@ -6,7 +6,7 @@ PLUGIN=""
 if [ ! -z `echo $PROJECT | egrep 'app/Plugin'` ]
 then
   APP=`echo $PROJECT | perl -pe 's/\/\w\+\/\w\+\/\w\+$//'`
-  PLUGIN=`echo $PROJECT | perl -pe 's/.*\/\(\w\+\)$/\1/'`
+  PLUGIN=`echo $PROJECT | perl -pe 's/.*\/(\w\+)$/$1/'`
 fi
 
 FILES=""
@@ -23,9 +23,9 @@ then
     echo $TEST
     if [ -z `echo $TEST | egrep \\Test\\.\(php\)\$` ]
     then
-      TEST=`echo $TEST | perl -pe 's/\([a-zA-Z0-9\/]\+\)\.php/\1/g'`
+      TEST=`echo $TEST | perl -pe 's/([a-zA-Z0-9\/]+)\.php/$1/g'`
     else
-      TEST=`echo $TEST | perl -pe 's/app\/Test\/Case\/\([a-zA-Z0-9\/]\+\)Test\.php/\1/g'`
+      TEST=`echo $TEST | perl -pe 's/app\/Test\/Case\/([a-zA-Z0-9\/]+)Test\.php/$1/g'`
     fi
     echo $TEST
     if [ "$PLUGIN" != "" ]
