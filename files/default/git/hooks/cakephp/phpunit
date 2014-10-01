@@ -31,8 +31,10 @@ then
     if [ "$PLUGIN" != "" ]
     then
       cd $APP
+      [ ! -r "app/${PLUGIN}/Test/Case/${TEST}Test.php" ] && continue
       ./lib/Cake/Console/cake test $PLUGIN $TEST --stderr --configuration phpunit.xml.dist || exit $?
     else
+      [ ! -r "app/Test/Case/${TEST}Test.php" ] && continue
       ./lib/Cake/Console/cake test app $TEST --stderr --configuration phpunit.xml.dist || exit $?
     fi
   done

@@ -8,7 +8,7 @@ for FILE in `git diff --cached --name-only --diff-filter=ACMR HEAD | egrep \\\\.
 do
   FILES="$FILES $PROJECT/$FILE"
 done
-FILES_CSV=`echo $FILES | perl -pe 's/\s/,/g'`
+FILES_CSV=`echo $FILES | sed 's/\s/,/g'`
 
 if [ "$FILES_CSV" != "" ]
 then
