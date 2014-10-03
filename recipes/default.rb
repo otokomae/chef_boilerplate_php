@@ -92,14 +92,19 @@ execute 'pear config-set auto_discover 1' do
 end
 if node[:boilerplate_php][:cakephp]
   # cakephp 2.x is not compatible with phpunit 4.x
+  php_pear_channel 'pear.cakephp.org'
+  # php_pear_channel 'pear.cakephp.org' do
+  #   action :discover
+  # end
   packages.push('phpunit/PHPUnit-3.7.32', 'cakephp/CakePHP_CodeSniffer')
 else
   packages.push('phpunit/PHPUnit', 'pear/PHP_CodeSniffer')
 end
 execute 'install pear packages' do
-  command 'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor' %
-    packages.join(' ')
-  not_if {
+  command sprintf(
+    'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor',
+    packages.join(' '))
+  not_if do
     ::File.exist?('/usr/bin/phpunit') &&
     ::File.exist?('/usr/bin/phpcs') &&
     ::File.exist?('/usr/bin/phpmd') &&
@@ -108,7 +113,7 @@ execute 'install pear packages' do
     ::File.exist?('/usr/bin/phploc') &&
     ::File.exist?('/usr/bin/phpcb') &&
     ::File.exist?('/usr/bin/phpdoc')
-  }
+  end
 end
 
 ruleset = if File.exist?(
