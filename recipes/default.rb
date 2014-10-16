@@ -173,6 +173,9 @@ include_recipe 'apache2'
   end
 end
 
+chef_gem 'chef-helpers'
+require 'chef-helpers'
+
 ## Setup jenkins
 if node[:boilerplate][:jenkins]
   include_recipe 'jenkins::master'
