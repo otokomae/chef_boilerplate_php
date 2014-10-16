@@ -17,16 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include_recipe 'boilerplate'
-
-case node[:platform]
-when 'debian'
-  include_recipe 'dotdeb_repo'
-  include_recipe 'dotdeb_repo::php_newest'
-when 'ubuntu'
-  include_recipe 'php::apt_ondrej_ppa'
-end
-
 begin
   hhvm = 'hhvm'
   include_recipe 'hhvm'
@@ -43,16 +33,13 @@ end
 # Install packages necessary for this project
 %w(
   php5 php5-mysql php5-curl php5-cli php5-imagick php5-xdebug php5-mcrypt php5-xsl php-pear
-  apache2-mpm-prefork libapache2-mod-php5
+  libapache2-mod-php5
   python-pip
 ).each do |pkg|
   package pkg do
     action [:install, :upgrade]
   end
 end
-
-# Workaround to install apache after ondrej ppa init which includes apache2.4
-include_recipe 'boilerplate::apache2' if node[:boilerplate][:apache2]
 
 # Install pre-commit hooks
 %w( php cakephp ).each do |hooks|
