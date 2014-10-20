@@ -9,10 +9,27 @@ provisioner:
 
 platforms:
   - name: ubuntu-12.04
+    run_list:
+      - recipe[apt]
+      - recipe[apt-repo]
+      - recipe[boilerplate::apt_fast]
   - name: debian-7.4
+    run_list:
+      - recipe[apt]
+      - recipe[apt-repo]
+      - recipe[boilerplate::apt_fast]
 
 suites:
   - name: boilerplate_php
     run_list:
       - recipe[chef-dk]
+      - recipe[boilerplate_php::php55]
+      - recipe[nodejs::nodejs_from_package]
+      - recipe[phantomjs]
+      - recipe[python]
+      - recipe[apache2]
+      - recipe[database::mysql]
+      - recipe[mysql::server]
+      - recipe[jenkins::master]
+      - recipe[boilerplate]
       - recipe[boilerplate_php]
