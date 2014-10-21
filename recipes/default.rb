@@ -177,7 +177,7 @@ chef_gem 'chef-helpers'
 require 'chef-helpers'
 
 ## Setup jenkins
-if node[:boilerplate][:jenkins]
+if node[:boilerplate_jenkins]
   include_recipe 'jenkins::master'
 
   jobs = []
