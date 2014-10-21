@@ -1,9 +1,18 @@
-<?xml version='1.0' encoding='UTF-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
 <matrix-project>
   <actions/>
   <description></description>
   <keepDependencies>false</keepDependencies>
   <properties>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.BooleanParameterDefinition>
+          <name>UPGRADE_DEPENDENCIES</name>
+          <description></description>
+          <defaultValue>true</defaultValue>
+        </hudson.model.BooleanParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
     <hudson.model.ParametersDefinitionProperty>
       <parameterDefinitions>
         <net.uaznia.lukanus.hudson.plugins.gitparameter.GitParameterDefinition>
@@ -28,7 +37,7 @@
       <throttleOption>project</throttleOption>
       <matrixOptions>
         <throttleMatrixBuilds>true</throttleMatrixBuilds>
-        <throttleMatrixConfigurations>false</throttleMatrixConfigurations>
+        <throttleMatrixConfigurations>true</throttleMatrixConfigurations>
       </matrixOptions>
     </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>

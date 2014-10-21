@@ -1,10 +1,10 @@
 #!/bin/bash -ex
 
-if [ "$ENVIRONMENT" = "development" ]
+if [ -w "Berksfile.lock" -a "$UPGRADE_DEPENDENCIES" = "true" ]
 then
   bundle update
-  bundle ex berks update
+  berks update
 else
   bundle install --without development
-  bundle ex berks install -e development
+  berks install -e development
 fi

@@ -17,16 +17,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-include_recipe 'boilerplate'
-
-case node[:platform]
-when 'debian'
-  include_recipe 'dotdeb_repo'
-  include_recipe 'dotdeb_repo::php_newest'
-when 'ubuntu'
-  include_recipe 'php::apt_ondrej_ppa'
-end
-
 begin
   hhvm = 'hhvm'
   include_recipe 'hhvm'
@@ -43,16 +33,13 @@ end
 # Install packages necessary for this project
 %w(
   php5 php5-mysql php5-curl php5-cli php5-imagick php5-xdebug php5-mcrypt php5-xsl php-pear
-  apache2-mpm-prefork libapache2-mod-php5
+  libapache2-mod-php5
   python-pip
 ).each do |pkg|
   package pkg do
     action [:install, :upgrade]
   end
 end
-
-# Workaround to install apache after ondrej ppa init which includes apache2.4
-include_recipe 'boilerplate::apache2' if node[:boilerplate][:apache2]
 
 # Install pre-commit hooks
 %w( php cakephp ).each do |hooks|
@@ -86,32 +73,34 @@ end
     action :discover
   end
 end
+packages = []
+execute 'pear config-set auto_discover 1' do
+  command 'pear config-set auto_discover 1'
+end
 if node[:boilerplate_php][:cakephp]
   # cakephp 2.x is not compatible with phpunit 4.x
-  execute 'install phpunit' do
-    command 'pear config-set auto_discover 1; pear install --alldeps phpunit/PHPUnit-3.7.32'
-    not_if { ::File.exist?('/usr/bin/phpunit') }
-  end
-
-  execute 'install phpcs' do
-    command 'pear channel-discover pear.cakephp.org; pear install --alldeps cakephp/CakePHP_CodeSniffer'
-    not_if { ::File.exist?('/usr/bin/phpcs') }
-  end
+  php_pear_channel 'pear.cakephp.org'
+  # php_pear_channel 'pear.cakephp.org' do
+  #   action :discover
+  # end
+  packages.push('phpunit/PHPUnit-3.7.32', 'cakephp/CakePHP_CodeSniffer')
 else
-  execute 'install phpunit' do
-    command 'pear config-set auto_discover 1; pear install --alldeps phpunit/PHPUnit'
-    not_if { ::File.exist?('/usr/bin/phpunit') }
-  end
-
-  execute 'install phpcs' do
-    command 'pear install --alldeps pear/PHP_CodeSniffer'
-    not_if { ::File.exist?('/usr/bin/phpcs') }
-  end
+  packages.push('phpunit/PHPUnit', 'pear/PHP_CodeSniffer')
 end
-
-execute 'install phpmd' do
-  command 'pear install --alldeps phpmd/PHP_PMD'
-  not_if { ::File.exist?('/usr/bin/phpmd') }
+execute 'install pear packages' do
+  command sprintf(
+    'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor',
+    packages.join(' '))
+  not_if do
+    ::File.exist?('/usr/bin/phpunit') &&
+    ::File.exist?('/usr/bin/phpcs') &&
+    ::File.exist?('/usr/bin/phpmd') &&
+    ::File.exist?('/usr/bin/pdepend') &&
+    ::File.exist?('/usr/bin/phpcpd') &&
+    ::File.exist?('/usr/bin/phploc') &&
+    ::File.exist?('/usr/bin/phpcb') &&
+    ::File.exist?('/usr/bin/phpdoc')
+  end
 end
 
 ruleset = if File.exist?(
@@ -126,31 +115,6 @@ ruleset = if File.exist?(
 directory '/etc/phpmd'
 cookbook_file '/etc/phpmd/rules.xml' do
   source ruleset
-end
-
-execute 'install pdepend' do
-  command 'pear install --alldeps pdepend/PHP_Depend'
-  not_if { ::File.exist?('/usr/bin/pdepend') }
-end
-
-execute 'install phpcpd' do
-  command 'pear install --alldeps phpunit/phpcpd'
-  not_if { ::File.exist?('/usr/bin/phpcpd') }
-end
-
-execute 'install phploc' do
-  command 'pear install --alldeps phpunit/phploc'
-  not_if { ::File.exist?('/usr/bin/phploc') }
-end
-
-execute 'install phpcb' do
-  command 'pear install --alldeps phpunit/PHP_CodeBrowser'
-  not_if { ::File.exist?('/usr/bin/phpcb') }
-end
-
-execute 'install phpdoc' do
-  command 'pear install --alldeps phpdoc/phpDocumentor'
-  not_if { ::File.exist?('/usr/bin/phpdoc') }
 end
 
 # Install packages
@@ -208,6 +172,9 @@ include_recipe 'apache2'
     enable true
   end
 end
+
+chef_gem 'chef-helpers'
+require 'chef-helpers'
 
 ## Setup jenkins
 if node[:boilerplate][:jenkins]

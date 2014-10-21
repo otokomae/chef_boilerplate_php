@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 
-bundle ex foodcritic -f any --tags ~FC001 --tags ~FC014 .
-bundle ex rspec --color --format progress
-bundle ex rubocop
-bundle ex kitchen test -c `ohai cpu/total`
-bundle ex knife cookbook site share boilerplate_php Utilities -u topaz2
+foodcritic -f any --tags ~FC001 --tags ~FC014 .
+rspec --color --format progress
+rubocop
+kitchen test --destroy=always -c `ohai cpu/total`
+knife cookbook site share boilerplate_php Utilities -u topaz2
