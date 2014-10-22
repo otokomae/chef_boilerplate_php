@@ -1,5 +1,5 @@
 driver:
-  name: vagrant
+  name: docker
   customize:
     cpus: 2
     memory: 1024
@@ -13,6 +13,7 @@ platforms:
       - recipe[apt]
       - recipe[apt-repo]
       - recipe[boilerplate::apt_fast]
+      - recipe[php::apt_ondrej_ppa]
   - name: debian-7.4
     run_list:
       - recipe[apt]
@@ -23,7 +24,6 @@ suites:
   - name: boilerplate_php
     run_list:
       - recipe[chef-dk]
-      - recipe[boilerplate_php::php55]
       - recipe[nodejs::nodejs_from_package]
       - recipe[phantomjs]
       - recipe[python]
@@ -33,3 +33,18 @@ suites:
       - recipe[jenkins::master]
       - recipe[boilerplate]
       - recipe[boilerplate_php]
+    attributes:
+      apache:
+        version: '2.4'
+      apt:
+        keyserver_port: 80
+      mysql:
+        role: 'master'
+        server_id: 1
+        bind_address: '0.0.0.0'
+        server_root_password: 'root'
+        server_repl_password: 'repl'
+        server_debian_password: ''
+      jenkins:
+        executor:
+          timeout: 600
