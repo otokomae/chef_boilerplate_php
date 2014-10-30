@@ -36,8 +36,6 @@ suites:
     attributes:
       apache:
         version: '2.4'
-      apt:
-        keyserver_port: 80
       mysql:
         role: 'master'
         server_id: 1
