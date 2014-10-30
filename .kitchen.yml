@@ -11,13 +11,11 @@ platforms:
   - name: ubuntu-12.04
     run_list:
       - recipe[apt]
-      - recipe[apt-repo]
       - recipe[boilerplate::apt_fast]
       - recipe[php::apt_ondrej_ppa]
   - name: debian-7.4
     run_list:
       - recipe[apt]
-      - recipe[apt-repo]
       - recipe[boilerplate::apt_fast]
 
 suites:
