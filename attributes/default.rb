@@ -15,17 +15,16 @@ default[:boilerplate_php][:git] = {
 }
 
 default[:boilerplate_php][:framework] = {
-  type: :symfony
+  type: :symfony,
+  version: '2.x'
 }
 default[:boilerplate_php][:symfony] = {
-  version: '2.x',
   git: {
     hooks: {
     }
   }
 }
 default[:boilerplate_php][:cakephp] = {
-  version: '2.x',
   git: {
     hooks: {
       phpcs: 'cakephp/phpcs',

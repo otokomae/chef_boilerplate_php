@@ -42,7 +42,7 @@ end
 end
 
 # Install pre-commit hooks
-%w( php cakephp ).each do |hooks|
+%W( php #{node[:boilerplate_php][:framework][:type]} ).each do |hooks|
   remote_directory "/usr/share/git-core/templates/hooks/#{hooks}" do
     files_mode 0755
     source "git/hooks/#{hooks}"
@@ -80,9 +80,6 @@ end
 if node[:boilerplate_php][:cakephp]
   # cakephp 2.x is not compatible with phpunit 4.x
   php_pear_channel 'pear.cakephp.org'
-  # php_pear_channel 'pear.cakephp.org' do
-  #   action :discover
-  # end
   packages.push('phpunit/PHPUnit-3.7.32', 'cakephp/CakePHP_CodeSniffer')
 else
   packages.push('phpunit/PHPUnit', 'pear/PHP_CodeSniffer')
