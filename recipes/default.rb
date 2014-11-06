@@ -87,13 +87,13 @@ execute 'install pear packages' do
     packages.join(' '))
   not_if do
     ::File.exist?('/usr/bin/phpunit') &&
-    ::File.exist?('/usr/bin/phpcs') &&
-    ::File.exist?('/usr/bin/phpmd') &&
-    ::File.exist?('/usr/bin/pdepend') &&
-    ::File.exist?('/usr/bin/phpcpd') &&
-    ::File.exist?('/usr/bin/phploc') &&
-    ::File.exist?('/usr/bin/phpcb') &&
-    ::File.exist?('/usr/bin/phpdoc')
+      ::File.exist?('/usr/bin/phpcs') &&
+      ::File.exist?('/usr/bin/phpmd') &&
+      ::File.exist?('/usr/bin/pdepend') &&
+      ::File.exist?('/usr/bin/phpcpd') &&
+      ::File.exist?('/usr/bin/phploc') &&
+      ::File.exist?('/usr/bin/phpcb') &&
+      ::File.exist?('/usr/bin/phpdoc')
   end
 end
 
