@@ -19,7 +19,10 @@ platforms:
       - recipe[boilerplate::apt_fast]
 
 suites:
-  - name: boilerplate_php
+  - name: min
+    run_list:
+      - recipe[boilerplate_php]
+  - name: default
     run_list:
       - recipe[chef-dk]
       - recipe[nodejs::nodejs_from_package]

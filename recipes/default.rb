@@ -17,6 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+chef_gem 'chef-helpers'
+require 'chef-helpers'
+
 begin
   hhvm = 'hhvm'
   include_recipe 'hhvm'
@@ -59,12 +62,6 @@ execute 'initialize git hooks' do
   command 'git init'
   cwd node[:boilerplate][:app_root]
   only_if { ::File.exist?(node[:boilerplate][:app_root]) }
-end
-
-# Install gem packages
-execute 'install php related gem packages' do
-  command "cd #{node[:boilerplate][:app_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
-  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
 end
 
 # Install pear packages
@@ -169,9 +166,6 @@ include_recipe 'apache2'
     enable true
   end
 end
-
-chef_gem 'chef-helpers'
-require 'chef-helpers'
 
 ## Setup jenkins
 if node[:boilerplate_jenkins]
