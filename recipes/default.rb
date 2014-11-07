@@ -65,7 +65,12 @@ execute 'initialize git hooks' do
 end
 
 # Install pear packages
-%w( pear.phpunit.de pear.phpmd.org pear.pdepend.org pear.phpdoc.org ).each do |channel|
+%w(
+  pear.phpunit.de
+  pear.phpmd.org
+  pear.pdepend.org
+  pear.phpdoc.org
+).each do |channel|
   php_pear_channel channel do
     action :discover
   end
@@ -83,7 +88,7 @@ else
 end
 execute 'install pear packages' do
   command sprintf(
-    'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor',
+    'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor-2.7.0',
     packages.join(' '))
   not_if do
     ::File.exist?('/usr/bin/phpunit') &&

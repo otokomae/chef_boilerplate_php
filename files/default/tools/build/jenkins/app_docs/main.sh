@@ -3,7 +3,7 @@
 APP=`basename $CLASS_DOC_SOURCE_URI | perl -pi -e 's/([^\/]+)\.git$/$1/'`
 CLASS_DOC_SOURCE_ROOT=$WORKSPACE/$APP
 APP_ROOT=$CLASS_DOC_SOURCE_ROOT/app
-LOG=/var/log/phpdoc.log
+LOG=/var/log/jenkins/phpdoc.log
 
 # Clear previous build
 rm -rf $APP
