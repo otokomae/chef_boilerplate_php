@@ -64,42 +64,10 @@ execute 'initialize git hooks' do
   only_if { ::File.exist?(node[:boilerplate][:app_root]) }
 end
 
-# Install pear packages
-%w(
-  pear.phpunit.de
-  pear.phpmd.org
-  pear.pdepend.org
-  pear.phpdoc.org
-).each do |channel|
-  php_pear_channel channel do
-    action :discover
-  end
-end
-packages = []
-execute 'pear config-set auto_discover 1' do
-  command 'pear config-set auto_discover 1'
-end
-if node[:boilerplate_php][:cakephp]
-  # cakephp 2.x is not compatible with phpunit 4.x
-  php_pear_channel 'pear.cakephp.org'
-  packages.push('phpunit/PHPUnit-3.7.32', 'cakephp/CakePHP_CodeSniffer')
-else
-  packages.push('phpunit/PHPUnit', 'pear/PHP_CodeSniffer')
-end
-execute 'install pear packages' do
-  command sprintf(
-    'pear install --alldeps %s phpmd/PHP_PMD pdepend/PHP_Depend phpunit/phpcpd phpunit/phploc phpunit/PHP_CodeBrowser phpdoc/phpDocumentor-2.7.0',
-    packages.join(' '))
-  not_if do
-    ::File.exist?('/usr/bin/phpunit') &&
-      ::File.exist?('/usr/bin/phpcs') &&
-      ::File.exist?('/usr/bin/phpmd') &&
-      ::File.exist?('/usr/bin/pdepend') &&
-      ::File.exist?('/usr/bin/phpcpd') &&
-      ::File.exist?('/usr/bin/phploc') &&
-      ::File.exist?('/usr/bin/phpcb') &&
-      ::File.exist?('/usr/bin/phpdoc')
-  end
+# Install gem packages
+execute 'install php related gem packages' do
+  command "cd #{node[:boilerplate][:app_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
+  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
 end
 
 ruleset = if File.exist?(

@@ -3,6 +3,8 @@
 DIRNAME="$(dirname -- "$0")"
 HOOKS="<%= node[:boilerplate_php][:git][:hooks].values.sort.join(' ') %>"
 
+export PATH=$PATH:/var/www/app/vendors/bin
+
 for HOOK in $HOOKS
 do
   echo "Running hook: $HOOK"
