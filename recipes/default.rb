@@ -70,15 +70,17 @@ execute 'install php related gem packages' do
   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
 end
 
-ruleset = if File.exist?(
+ruleset =
+  if File.exist?(
     run_context.cookbook_collection[:boilerplate_php]
-      .preferred_filename_on_disk_location(run_context.node,
-      :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml")
-    )
-            "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml"
-          else
-            'build/default/phpmd/rules.xml'
-          end
+    .preferred_filename_on_disk_location(
+      run_context.node,
+      :files, "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml"
+    ))
+    "build/#{node[:boilerplate_php][:framework][:type]}/phpmd/rules.xml"
+  else
+    'build/default/phpmd/rules.xml'
+  end
 directory '/etc/phpmd'
 cookbook_file '/etc/phpmd/rules.xml' do
   source ruleset
