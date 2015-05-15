@@ -33,7 +33,7 @@ done
 IGNORE_PLUGINS=`echo $IGNORE_PLUGINS | cut -c 2-`
 
 # Exit on parse error
-phpdoc parse -d $APP_ROOT -t $WORKSPACE/phpdoc -i $IGNORE_PLUGINS,*/Config/* --force --ansi >> $LOG
+phpdoc parse -d $APP_ROOT -t $WORKSPACE/phpdoc -i $IGNORE_PLUGINS,*/Config/* --force --ansi | tee $LOG
 [ `grep -c '\[37;41m' $LOG` -ne 0 ] && cat $LOG && exit 1
 
 # Generate class docs
