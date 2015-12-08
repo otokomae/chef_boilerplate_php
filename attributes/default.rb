@@ -1,7 +1,7 @@
 default[:boilerplate_php] = {
   repo: {
     type: 'git',
-    uri: 'https://github.com/topaz2/chef_boilerplate_php.git'
+    uri: 'https://github.com/NetCommons3/chef_boilerplate_php.git'
   }
 }
 
