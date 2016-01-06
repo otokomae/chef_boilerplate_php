@@ -65,10 +65,10 @@ execute 'initialize git hooks' do
 end
 
 # Install gem packages
-execute 'install php related gem packages' do
-  command "cd #{node[:boilerplate][:app_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
-  only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
-end
+# execute 'install php related gem packages' do
+#   command "cd #{node[:boilerplate][:app_root]}; gemrat guard-phpcs guard-phpmd guard-phpunit2 --no-version"
+#   only_if { ::File.exist?("#{node[:boilerplate][:app_root]}/Gemfile") }
+# end
 
 ruleset =
   if File.exist?(
